@@ -1,5 +1,5 @@
 module Zip
-  class DOSTime < Time #:nodoc:all
+  module DOSTime #:nodoc:all
 
     #MS-DOS File Date and Time format as used in Interrupt 21H Function 57H:
 
@@ -41,6 +41,13 @@ module Zip
         return self.local(year, month, day, hour, minute, second)
       end
     end
+
+    def self.method_missing(m, *a, &b)
+      t = Time.send(m, *a, &b)
+      t.extend self if t.kind_of?(Time)
+      t
+    end
+
   end
 end
 
